@@ -118,9 +118,9 @@ def correlation(symbol1: str, symbol2: str):
     return {"correlation": round(float(corr), 4)}
 
 
-# ---------------------------
-# 🤖 ML PREDICTION
-# ---------------------------
+
+# PREDICTION
+
 @app.get("/predict/{symbol}")
 def predict_price(symbol: str):
     query = text("""
