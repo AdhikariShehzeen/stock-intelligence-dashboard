@@ -8,8 +8,7 @@ import requests
 BASE_URL = "https://stock-intelligence-dashboard-d6qx.onrender.com/"
 st.set_page_config(page_title="Stock Dashboard", layout="wide")
 st.title("📊 Stock Intelligence Dashboard")
-
-
+st.write("Backend:", "https://stock-intelligence-dashboard-d6qx.onrender.com")
 # SIDEBAR - COMPANY LIST
 
 st.sidebar.title("Select Company")
