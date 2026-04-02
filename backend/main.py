@@ -148,3 +148,8 @@ def predict_price(symbol: str):
         "symbol": symbol.upper(),
         "prediction": round(float(prediction), 2)
     }
+
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("backend.main:app", host="0.0.0.0", port=8000)
