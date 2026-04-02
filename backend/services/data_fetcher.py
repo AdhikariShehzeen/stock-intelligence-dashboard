@@ -1,7 +1,7 @@
 import yfinance as yf
 import pandas as pd
 import time
-import save_to_db
+from services import save_to_db
 
 
 COMPANIES = [
