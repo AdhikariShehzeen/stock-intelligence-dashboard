@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 import pandas as pd
 from sqlalchemy import create_engine, text
-from backend.services.data_fetcher import main as fetch_data
+
 
 app = FastAPI(title="Stock Intelligence API")
 
@@ -152,6 +152,7 @@ def predict_price(symbol: str):
 
 @app.get("/update-data")
 def update_data():
+    from backend.services.data_fetcher import main as fetch_data
     fetch_data()
     return {"message": "Data updated successfully"}
 
