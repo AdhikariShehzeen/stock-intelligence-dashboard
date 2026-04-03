@@ -1,19 +1,22 @@
-version: '3.9'
+version: "3.9"
 
 services:
-
   backend:
     build: .
-    container_name: fastapi_app
-    command: uvicorn backend.main:app --host 0.0.0.0 --port 8000
+    container_name: backend
     ports:
       - "8000:8000"
+    volumes:
+      - ./data:/app/data   # SQLite DB folder
+      - ./backend:/app/backend  # Backend code
+    depends_on:
+      - frontend
 
   frontend:
-    build: .
-    container_name: streamlit_app
-    command: streamlit run frontend/app.py --server.port 8501 --server.address 0.0.0.0
+    build:
+      context: ./frontend
+    container_name: frontend
     ports:
       - "8501:8501"
-    depends_on:
-      - backend
+    volumes:
+      - ./frontend:/app/frontend

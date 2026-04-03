@@ -1,8 +1,12 @@
 import yfinance as yf
 import pandas as pd
 import time
-from services import save_to_db
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from services import save_to_db
+# from . import save_to_db
 
 COMPANIES = [
     "RELIANCE","TCS","INFY","HDFCBANK","ICICIBANK","KOTAKBANK","SBIN","ITC","LT","AXISBANK",

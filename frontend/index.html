@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stock Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body style="font-family: Arial; padding: 20px;">
+
+    <h1>📊 Stock Intelligence Dashboard</h1>
+
+    <!-- COMPANY SELECT -->
+    <label>Select Company:</label>
+    <select id="companySelect"></select>
+
+    <h3>📈 Price Chart</h3>
+    <canvas id="priceChart"></canvas>
+
+    <h3>📊 Summary</h3>
+    <p id="summary"></p>
+
+    <h3>🤖 Prediction</h3>
+    <p id="prediction"></p>
+
+    <hr>
+
+    <h3>📊 Compare Stocks</h3>
+    <select id="company2"></select>
+    <button onclick="compareStocks()">Compare</button>
+
+    <canvas id="compareChart"></canvas>
+    <p id="correlation"></p>
+
+<script>
+
+const BASE_URL = "http://54.206.205.26:8000";  // your backend
+
+let chart;
+
+// =======================
+// LOAD COMPANIES
+// =======================
+async function loadCompanies() {
+    const res = await fetch(`${BASE_URL}/companies`);
+    const data = await res.json();
+
+    const select = document.getElementById("companySelect");
+    const select2 = document.getElementById("company2");
+
+    data.forEach(c => {
+        let option = `<option value="${c.Symbol}">${c.Symbol}</option>`;
+        select.innerHTML += option;
+        select2.innerHTML += option;
+    });
+
+    loadData(select.value);
+}
+
+document.getElementById("companySelect").addEventListener("change", (e) => {
+    loadData(e.target.value);
+});
+
+// =======================
+// LOAD STOCK DATA
+// =======================
+async function loadData(symbol) {
+
+    // PRICE DATA
+    const res = await fetch(`${BASE_URL}/data/${symbol}`);
+    const data = await res.json();
+
+    const labels = data.map(d => d.Date);
+    const prices = data.map(d => d.Close);
+
+    // CHART
+    if (chart) chart.destroy();
+
+    const ctx = document.getElementById("priceChart").getContext("2d");
+
+    chart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [{
+                label: symbol,
+                data: prices
+            }]
+        }
+    });
+
+    // SUMMARY
+    const sumRes = await fetch(`${BASE_URL}/summary/${symbol}`);
+    const summary = await sumRes.json();
+
+    document.getElementById("summary").innerHTML =
+        `High: ${summary.high_52w} | Low: ${summary.low_52w} | Avg: ${summary.avg_close}`;
+
+    // PREDICTION
+    const predRes = await fetch(`${BASE_URL}/predict/${symbol}`);
+    const pred = await predRes.json();
+
+    document.getElementById("prediction").innerHTML =
+        `Predicted Price: ₹ ${pred.prediction}`;
+}
+
+// =======================
+// COMPARE
+// =======================
+async function compareStocks() {
+
+    const s1 = document.getElementById("companySelect").value;
+    const s2 = document.getElementById("company2").value;
+
+    const res = await fetch(`${BASE_URL}/compare?symbol1=${s1}&symbol2=${s2}`);
+    const data = await res.json();
+
+    let labels = [...new Set(data.map(d => d.Date))];
+
+    let prices1 = data.filter(d => d.Symbol === s1).map(d => d.Close);
+    let prices2 = data.filter(d => d.Symbol === s2).map(d => d.Close);
+
+    const ctx = document.getElementById("compareChart").getContext("2d");
+
+    new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: labels,
+            datasets: [
+                { label: s1, data: prices1 },
+                { label: s2, data: prices2 }
+            ]
+        }
+    });
+
+    // CORRELATION
+    const corrRes = await fetch(`${BASE_URL}/correlation?symbol1=${s1}&symbol2=${s2}`);
+    const corr = await corrRes.json();
+
+    document.getElementById("correlation").innerHTML =
+        `Correlation: ${corr.correlation}`;
+}
+
+// INIT
+loadCompanies();
+
+</script>
+
+</body>
+</html>

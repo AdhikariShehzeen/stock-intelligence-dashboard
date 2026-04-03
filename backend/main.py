@@ -5,6 +5,23 @@ from sqlalchemy import create_engine, text
 
 app = FastAPI(title="Stock Intelligence API")
 
+# from fastapi.staticfiles import StaticFiles
+# import os
+
+# # Serve frontend
+# frontend_path = os.path.join(os.path.dirname(__file__), "../frontend")
+# app.mount("/", StaticFiles(directory=frontend_path, html=True), name="frontend")
+
+# from fastapi.middleware.cors import CORSMiddleware
+
+# app.add_middleware(
+#     CORSMiddleware,
+#     allow_origins=["*"],
+#     allow_credentials=True,
+#     allow_methods=["*"],
+#     allow_headers=["*"],
+# )
+
 
 # DB CONNECTION
 
@@ -22,6 +39,7 @@ def home():
 
 @app.get("/companies")
 def get_companies():
+    print("hello!!!!!!!!!!!!!")
     query = """
         SELECT DISTINCT Symbol, Company
         FROM stock_data
