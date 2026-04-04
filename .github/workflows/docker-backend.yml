@@ -1,4 +1,4 @@
-name: Build and Push Docker to ECR
+name: Build and Push Backend Docker to ECR
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build-and-push:
+  build-and-push-backend:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,8 +24,8 @@ jobs:
       - name: Login to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build, tag, and push image
+      - name: Build, tag, and push backend image
         run: |
           IMAGE_URI=${{ secrets.ECR_REPOSITORY }}:latest
-          docker build -t $IMAGE_URI .
+          docker build -f Dockerfile.backend -t $IMAGE_URI .
           docker push $IMAGE_URI

@@ -1,0 +1,31 @@
+name: Build and Push Streamlit Docker to ECR
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-push-streamlit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build, tag, and push streamlit image
+        run: |
+          IMAGE_URI=${{ secrets.ECR_REPOSITORY_STREAMLIT }}:latest
+          docker build -f Dockerfile.streamlit -t $IMAGE_URI .
+          docker push $IMAGE_URI

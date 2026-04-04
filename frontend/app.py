@@ -7,7 +7,8 @@ import requests
 import requests
 
 
-BASE_URL = "http://54.206.205.26:8000"
+BASE_URL = "http://54.206.106.216:8000/"
+
 
 # try:
 #     response = requests.get(f"{BASE_URL}/companies", timeout=5)
