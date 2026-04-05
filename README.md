@@ -1,42 +1,138 @@
-# 📊 Stock Intelligence Dashboard
+# Stock Intelligence Dashboard
 
-A full-stack stock analysis dashboard built using FastAPI (backend) and Streamlit (frontend).
+## Overview
 
----
+This project is a mini financial data platform that collects, processes, and visualizes stock market data.
 
-## 🚀 Live Demo
+It demonstrates:
 
-🔗 Frontend:  
-https://stock-intelligence-dashboard-k25kk2m9eetclx3nxsy7cj.streamlit.app/
-
-🔗 Backend API Docs:  
-https://stock-intelligence-dashboard-d6qx.onrender.com/docs
-
----
-
-## 🧠 Features
-
-- Real-time stock data fetching
-- Machine learning prediction (if added)
-- Interactive UI using Streamlit
-- FastAPI backend for API handling
+* Data collection using APIs
+* Backend development with FastAPI
+* Data visualization using Streamlit
+* Docker-based deployment
+* AWS ECS hosting
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
-- Python
-- FastAPI
-- Streamlit
-- Pandas / NumPy
-- Scikit-learn (if used)
-
----
-
-## ⚠️ Note
-
-Backend is hosted on Render free tier, so it may take a few seconds to wake up on first request.
+* Python
+* FastAPI
+* Streamlit
+* SQLite
+* Pandas, NumPy
+* yfinance
+* Docker
+* AWS (ECR + ECS)
+* GitHub Actions (CI/CD)
 
 ---
 
-## 📁 Project Structure
+## Features
+
+* Stock price visualization
+* 52-week summary
+* Compare two stocks
+* Correlation analysis
+* Simple price prediction
+* Dockerized backend & frontend
+* Deployed on AWS
+
+---
+
+##  Project Structure
+
+```
+backend/
+frontend/
+data/
+Dockerfile.backend
+Dockerfile.streamlit
+.github/workflows/
+```
+
+---
+
+##  API Endpoints
+
+* `/companies` → list of stocks
+* `/data/{symbol}` → last 30 days data
+* `/summary/{symbol}` → 52-week stats
+* `/compare` → compare stocks
+* `/correlation` → correlation value
+* `/predict/{symbol}` → price prediction
+
+---
+
+## Live Deployment
+
+Frontend:
+
+```
+http://3.104.110.81:8501/
+```
+
+Backend:
+
+```
+http://54.206.106.216:8000/
+```
+
+Swagger Docs:
+
+```
+http://54.206.106.216:8000/docs
+```
+
+> Note: Public IPs may change after redeployment.
+
+---
+
+## Docker
+
+### Backend
+
+```bash
+docker build -f Dockerfile.backend .
+```
+
+### Frontend
+
+```bash
+docker build -f Dockerfile.streamlit .
+```
+
+---
+
+## CI/CD
+
+* GitHub Actions builds Docker images
+* Pushes to AWS ECR
+* ECS runs containers
+
+---
+
+## Data Source
+
+* Yahoo Finance (yfinance)
+
+---
+
+## Limitations
+
+* Uses SQLite (not scalable)
+* Public IP instead of domain
+* Basic prediction model
+
+---
+
+## Future Improvements
+
+* PostgreSQL / Cloud DB
+* Authentication
+* Advanced ML models
+* Load balancer + domain
+
+---
+
+
